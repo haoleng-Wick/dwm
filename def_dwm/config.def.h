@@ -32,16 +32,18 @@ static const unsigned int alphas[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "龎", "戮", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "", "", "龎", "", "戮", "6", "7", "8", "䀹" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-/*   class	instance     title    tags mask    isfloating	CenterThisWindow?   monitor */
-//	{ "st",	NULL,       NULL,       0,				0,				0,         -1 },
-	{ "st",	NULL,       NULL,       0,			  False,			1,         -1 },
+/*   class						instance 	title 	tags mask 	iscentered 	isfloating 	monitor */
+	{ "st",						NULL,       NULL,       0,			0,			0,		  -1 },
+	{ "netease-cloud-music",	NULL,       NULL,		1 << 3,		0,			0, 		  -1 },
+	{ "qv2ray",					NULL,       NULL,		1 << 8,		1,			1, 		  -1 },
+	{ "simplescreenrecorder",	NULL,       NULL,		0,			1,			1, 		  -1 },
 };
 
 /* layout(s) */
@@ -53,7 +55,7 @@ static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ " ﬿ ",      tile },    /* first entry is default */
 	{ "  ",      NULL },    /* no layout function means floating behavior */
-	{ "  ",      monocle },
+	{ " [M] ",      monocle },
 };
 
 /* key definitions */
@@ -71,30 +73,27 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-//static const char *firefox[]  = { "firefox", NULL };
-static const char *edge[]  = { "microsoft-edge-stable", NULL };
+static const char *browse[]  = { "eatmydata", "firefox", NULL };
 static const char *scrot[]  = { "/home/haoleng/.dwm/script/scrot.sh", NULL };
-static const char *sound_add[]  = { "/home/haoleng/.dwm/script/amixer_add.sh", NULL };
-static const char *sound_sub[]  = { "/home/haoleng/.dwm/script/amixer_sub.sh", NULL };
-static const char *light_add[]  = { "/home/haoleng/.dwm/script/xlight_add.sh", NULL };
-static const char *light_sub[]  = { "/home/haoleng/.dwm/script/xlight_sub.sh", NULL };
+static const char *sound_add[]  = { "amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
+static const char *sound_sub[]  = { "amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
+static const char *sound_toggle[]  = { "amixer", "sset", "Master", "toggle", NULL };
+static const char *light_add[]  = { "xbacklight", "-inc", "10", NULL };
+static const char *light_sub[]  = { "xbacklight", "-dec", "10", NULL };
 
 /* use xev to find the keycode */
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,             			XK_Return, spawn,          {.v = termcmd } },
-	//{ MODKEY,             			XK_o, 	   spawn,          {.v = firefox } },
-	{ MODKEY,             			XK_o, 	   spawn,          {.v = edge } },
+	{ MODKEY,             			XK_o, 	   spawn,          {.v = browse } },
 	{ MODKEY,             			XK_equal,  spawn,          {.v = scrot } },
-	{ 0,             			0x1008ff11,   spawn,		{.v = sound_sub } },
-	{ 0,             			0x1008ff13,   spawn,		{.v = sound_add } },
-	{ 0,             			0x1008ff03,   spawn,		{.v = light_sub } },
-	{ 0,             			0x1008ff02,   spawn,		{.v = light_add } },
-	//{ MODKEY,             			0x1008ff11,   spawn,		{.v = sound_sub } },
-	//{ MODKEY,             			0x1008ff13,   spawn,		{.v = sound_add } },
-	//{ MODKEY,             			0x1008ff03,   spawn,		{.v = light_sub } },
-	//{ MODKEY,             			0x1008ff02,   spawn,		{.v = light_add } },
+	/* 音量和亮度 通过xev获取按键的编码 */
+	{ 0,             				0x1008ff11,spawn,		   {.v = sound_sub } },
+	{ 0,             				0x1008ff12,spawn,		   {.v = sound_toggle } },
+	{ 0,             				0x1008ff13,spawn,		   {.v = sound_add } },
+	{ 0,             				0x1008ff03,spawn,		   {.v = light_sub } },
+	{ 0,             				0x1008ff02,spawn,		   {.v = light_add } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
