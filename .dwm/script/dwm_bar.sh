@@ -9,7 +9,7 @@ while true;do
 	let MEMORY_LEFT=(MEMORY_TOTAL-MEMORY_USED)
 	MEMORY=`awk 'BEGIN{printf "%.1f%%",('$MEMORY_LEFT'/'$MEMORY_TOTAL')*100}'`
 	BATTERY=$( sh ~/.dwm/script/battery_status.sh )
-	SOUND=$( amixer get Master|sed 's/\[/ /g'|sed 's/\]/ /g'|sed -n '5p'|awk '{print " "$4}' )
+	SOUND=$( amixer get Master|sed 's/\[/ /g'|sed 's/\]/ /g'|sed -n '6p'|awk '{print " "$5}' )
 	DATE=$( date +"  %F %R" )
 	xsetroot -name " $TEMP $CPU $MEMORY $BATTERY $SOUND $DATE "
 	sleep 1s

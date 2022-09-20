@@ -42,8 +42,7 @@ static const Rule rules[] = {
 /*   class						instance 	title 	tags mask 	iscentered 	isfloating 	monitor */
 	{ "st",						NULL,       NULL,       0,			0,			0,		  -1 },
 	{ "netease-cloud-music",	NULL,       NULL,		1 << 3,		0,			0, 		  -1 },
-	{ "qv2ray",					NULL,       NULL,		1 << 8,		1,			1, 		  -1 },
-	{ "simplescreenrecorder",	NULL,       NULL,		0,			1,			1, 		  -1 },
+	{ "simplescreenrecorder",	NULL,       NULL,		1 << 8,		1,			1, 		  -1 },
 };
 
 /* layout(s) */
@@ -73,11 +72,15 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *browse[]  = { "eatmydata", "firefox", NULL };
+static const char *browse[]  = { "microsoft-edge-stable", NULL };
 static const char *scrot[]  = { "/home/haoleng/.dwm/script/scrot.sh", NULL };
 static const char *sound_add[]  = { "amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
 static const char *sound_sub[]  = { "amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
 static const char *sound_toggle[]  = { "amixer", "sset", "Master", "toggle", NULL };
+static const char *music_play[]  = { "mocp", "-p", NULL };
+static const char *music_pause[]  = { "mocp", "-G", NULL };
+static const char *music_previous[]  = { "mocp", "-r", NULL };
+static const char *music_next[]  = { "mocp", "-f", NULL };
 static const char *light_add[]  = { "xbacklight", "-inc", "10", NULL };
 static const char *light_sub[]  = { "xbacklight", "-dec", "10", NULL };
 
@@ -88,10 +91,14 @@ static Key keys[] = {
 	{ MODKEY,             			XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,             			XK_o, 	   spawn,          {.v = browse } },
 	{ MODKEY,             			XK_equal,  spawn,          {.v = scrot } },
-	/* 音量和亮度 通过xev获取按键的编码 */
+	/* moc音乐播放器控制，系统音量、亮度调节 | 可通过xev获取按键的编码 */
 	{ 0,             				0x1008ff11,spawn,		   {.v = sound_sub } },
 	{ 0,             				0x1008ff12,spawn,		   {.v = sound_toggle } },
 	{ 0,             				0x1008ff13,spawn,		   {.v = sound_add } },
+	{ 0,							XK_Print,  spawn,          {.v = music_play } },
+	{ 0,             				0x1008ff14,spawn,		   {.v = music_pause } },
+	{ 0,             				0x1008ff16,spawn,		   {.v = music_previous } },
+	{ 0,             				0x1008ff17,spawn,		   {.v = music_next } },
 	{ 0,             				0x1008ff03,spawn,		   {.v = light_sub } },
 	{ 0,             				0x1008ff02,spawn,		   {.v = light_add } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },

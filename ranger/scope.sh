@@ -304,7 +304,7 @@ handle_mime() {
             pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}"\
                 -- "${FILE_PATH}" && exit 5
             exit 2;;
-
+			
         ## DjVu
         image/vnd.djvu)
             ## Preview as text conversion (requires djvulibre)
