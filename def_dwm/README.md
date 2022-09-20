@@ -1,3 +1,8 @@
+>  可以通过编辑`config.h`文件配置dwm，修改完后`make clean install`
+> 然后可以通过显示管理器例如`gdm`，`sddm`等启动dwm,或者通过xinit.
+
+--------
+
 dwm - dynamic window manager
 ============================
 dwm is an extremely fast, small, and dynamic window manager for X.
@@ -46,3 +51,4 @@ Configuration
 -------------
 The configuration of dwm is done by creating a custom config.h
 and (re)compiling the source code.
+
